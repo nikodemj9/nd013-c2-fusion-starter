@@ -15,6 +15,8 @@ import cv2
 import numpy as np
 import torch
 import zlib
+import open3d as o3d
+
 
 # add project directory to python path to enable relative imports
 import os
@@ -39,15 +41,22 @@ def show_pcl(pcl):
     print("student task ID_S1_EX2")
 
     # step 1 : initialize open3d with key callback and create window
+    visualizer = o3d.visualization.VisualizerWithKeyCallback()
+    visualizer.create_window(window_name='Show PCL')
 
-    # step 2 : create instance of open3d point-cloud class
+    # # step 2 : create instance of open3d point-cloud class
+    pcd = o3d.geometry.PointCloud()
 
-    # step 3 : set points in pcd instance by converting the point-cloud into 3d vectors (using open3d function Vector3dVector)
+    # # step 3 : set points in pcd instance by converting the point-cloud into 3d vectors (using open3d function Vector3dVector)
+    pcd.points = o3d.utility.Vector3dVector(pcl[:, 0:3])
 
-    # step 4 : for the first frame, add the pcd instance to visualization using add_geometry; for all other frames, use update_geometry instead
+    # # step 4 : for the first frame, add the pcd instance to visualization using add_geometry; for all other frames, use update_geometry instead
+    visualizer.add_geometry(pcd)
 
-    # step 5 : visualize point cloud and keep window open until right-arrow is pressed (key-code 262)
-
+    # # step 5 : visualize point cloud and keep window open until right-arrow is pressed (key-code 262)
+    # # visualizer.update_renderer()
+    visualizer.register_key_callback(262, o3d.visualization.VisualizerWithKeyCallback.close)
+    visualizer.run()
     #######
     ####### ID_S1_EX2 END #######     
        
