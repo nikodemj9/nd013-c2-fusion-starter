@@ -49,16 +49,36 @@ def measure_detection_performance(detections, labels, labels_valid, min_iou=0.5)
             print("student task ID_S4_EX1 ")
 
             ## step 1 : extract the four corners of the current label bounding-box
-            
-            ## step 2 : loop over all detected objects
+            lbl_x = label.box.center_x
+            lbl_y = label.box.center_y
+            lbl_z = label.box.center_z
+            lbl_w = label.box.width
+            lbl_l = label.box.length
+            lbl_yaw = label.box.heading
 
+            lbl_corners = tools.compute_box_corners(lbl_x, lbl_y, lbl_w, lbl_l, lbl_yaw)
+            ## step 2 : loop over all detected objects
+            for det in detections:
                 ## step 3 : extract the four corners of the current detection
-                
+                det_cl, det_x, det_y, det_z, det_h, det_w, det_l, det_yaw = det
+                det_corners = tools.compute_box_corners(det_x, det_y, det_w, det_l, det_yaw)
+
                 ## step 4 : computer the center distance between label and detection bounding-box in x, y, and z
-                
+                dist_x = np.float64(abs(lbl_x - det_x))
+                dist_y = np.float64(abs(lbl_y - det_y))
+                dist_z = abs(lbl_z - det_z)
+
                 ## step 5 : compute the intersection over union (IOU) between label and detection bounding-box
-                
+                label_poly = Polygon(lbl_corners)
+                det_poly = Polygon(det_corners)
+                intersection = label_poly.intersection(det_poly)
+                union = label_poly.union(det_poly)
+                iou = intersection.area/union.area
+
                 ## step 6 : if IOU exceeds min_iou threshold, store [iou,dist_x, dist_y, dist_z] in matches_lab_det and increase the TP count
+                if (iou > min_iou):
+                    matches_lab_det.append([iou, dist_x, dist_y, dist_z])
+                    true_positives = true_positives + 1
                 
             #######
             ####### ID_S4_EX1 END #######     
