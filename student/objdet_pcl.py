@@ -143,17 +143,32 @@ def bev_from_pcl(lidar_pcl, configs):
     print("student task ID_S2_EX2")
 
     ## step 1 : create a numpy array filled with zeros which has the same dimensions as the BEV map
+    intensity_map = np.zeros((configs.bev_height + 1, configs.bev_width + 1))
 
     # step 2 : re-arrange elements in lidar_pcl_cpy by sorting first by x, then y, then -z (use numpy.lexsort)
+    intensity_sort_idx = np.lexsort((-pcl[:, 3], pcl[:, 1], -pcl[:, 0]))
+    intensity_pcl = pcl[intensity_sort_idx]
 
     ## step 3 : extract all points with identical x and y such that only the top-most z-coordinate is kept (use numpy.unique)
     ##          also, store the number of points per x,y-cell in a variable named "counts" for use in the next task
+    counts, unique_idxs = np.unique(intensity_pcl[:, 0:2], axis=0, return_index=True)
+    intensity_pcl = intensity_pcl[unique_idxs]
+    intensity_pcl[intensity_pcl[:,3]>1.0,3] = 1.0
 
     ## step 4 : assign the intensity value of each unique entry in lidar_top_pcl to the intensity map 
     ##          make sure that the intensity is scaled in such a way that objects of interest (e.g. vehicles) are clearly visible    
     ##          also, make sure that the influence of outliers is mitigated by normalizing intensity on the difference between the max. and min. value within the point cloud
+    intensity_map[np.int_(intensity_pcl[:, 0]), np.int_(intensity_pcl[:, 1])] = intensity_pcl[:, 3] / (np.amax(intensity_pcl[:, 3])-np.amin(intensity_pcl[:, 3]))
 
     ## step 5 : temporarily visualize the intensity map using OpenCV to make sure that vehicles separate well from the background
+    img_intensity = intensity_map * 255
+    img_intensity = img_intensity.astype(np.uint8)
+
+    while (1):
+        cv2.imshow('img_intensity', img_intensity)
+        if cv2.waitKey(10) & 0xFF == 27:
+            break
+    cv2.destroyAllWindows()
 
     #######
     ####### ID_S2_EX2 END ####### 
