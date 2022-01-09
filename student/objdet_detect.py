@@ -196,6 +196,7 @@ def detect_objects(input_bev_maps, model, configs):
                                 outputs['dim'], K=configs.K)
             detections = detections.cpu().numpy().astype(np.float32)
             detections = post_processing(detections, configs)            
+            detections = detections[0][1]           
             print("student task ID_S3_EX1-5")
 
             #######
@@ -210,12 +211,22 @@ def detect_objects(input_bev_maps, model, configs):
     objects = [] 
 
     ## step 1 : check whether there are any detections
-
+    if len(detections):
         ## step 2 : loop over all detections
-        
+        for det in detections:
+            _, _x, _y, _, _, w, l, yaw = det
+            
+            size_x = configs.lim_x[1] - configs.lim_x[0]
+            size_y = configs.lim_y[1] - configs.lim_y[0]
+
             ## step 3 : perform the conversion using the limits for x, y and z set in the configs structure
-        
+            x = _y / configs.bev_height * size_x + configs.lim_x[0]
+            y = _x / configs.bev_width * size_y + configs.lim_y[0]
+            yaw = -yaw
+            w = w / configs.bev_width * size_y
+            l = l / configs.bev_height * size_x
             ## step 4 : append the current object to the 'objects' array
+            objects.append([1, x, y, 0.0, 1.50, w, l, yaw])
         
     #######
     ####### ID_S3_EX2 START #######   
