@@ -131,7 +131,7 @@ def bev_from_pcl(lidar_pcl, configs):
     pcl[:, 1] = pcl[:, 1] + middle_idx
 
     # step 4 : visualize point-cloud using the function show_pcl from a previous task
-    show_pcl(pcl)
+    # show_pcl(pcl)
     
     #######
     ####### ID_S2_EX1 END #######     
@@ -164,11 +164,11 @@ def bev_from_pcl(lidar_pcl, configs):
     img_intensity = intensity_map * 255
     img_intensity = img_intensity.astype(np.uint8)
 
-    while (1):
-        cv2.imshow('img_intensity', img_intensity)
-        if cv2.waitKey(10) & 0xFF == 27:
-            break
-    cv2.destroyAllWindows()
+    # while (1):
+    #     cv2.imshow('img_intensity', img_intensity)
+    #     if cv2.waitKey(10) & 0xFF == 27:
+    #         break
+    # cv2.destroyAllWindows()
 
     #######
     ####### ID_S2_EX2 END ####### 
@@ -199,11 +199,11 @@ def bev_from_pcl(lidar_pcl, configs):
     img_height = height_map * 255
     img_height = img_height.astype(np.uint8)
 
-    while (1):
-        cv2.imshow('img_height', img_height)
-        if cv2.waitKey(10) & 0xFF == 27:
-            break
-    cv2.destroyAllWindows()
+    # while (1):
+    #     cv2.imshow('img_height', img_height)
+    #     if cv2.waitKey(10) & 0xFF == 27:
+    #         break
+    # cv2.destroyAllWindows()
 
     #######
     ####### ID_S2_EX3 END #######       
