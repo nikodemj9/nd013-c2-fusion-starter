@@ -150,8 +150,7 @@ class Trackmanagement:
         # - increase track score
         # - set track state to 'tentative' or 'confirmed'
         ############
-        if (track.score < 1):
-            track.score = track.score + 1/params.window
+        track.score = track.score + 1/params.window
 
         if(track.score > 1/params.window):
             track.state = 'tentative'
@@ -159,6 +158,8 @@ class Trackmanagement:
         if(track.score > params.confirmed_threshold):
             track.state = 'confirmed'
         
+        if(track.score > 1.0):
+            track.score = 1.0
         ############
         # END student code
         ############ 

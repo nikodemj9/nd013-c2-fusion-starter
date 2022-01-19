@@ -92,10 +92,7 @@ class Filter:
         # TODO Step 1: update state x and covariance P with associated measurement, save x and P in track
         ############
 
-        if (meas.sensor.name == 'lidar'):
-            H = meas.sensor.get_H(track.x)
-        elif (meas.sensor.name == 'camera'):
-            H = meas.sensor.get_hx(track.x)
+        H = meas.sensor.get_H(track.x)
 
         # Covariance of residual
         S = self.S(track, meas, H)
@@ -118,12 +115,11 @@ class Filter:
 
         if (meas.sensor.name == 'lidar'):
             H = meas.sensor.get_H(track.x)
+            gamma = meas.z - H * track.x
         elif (meas.sensor.name == 'camera'):
-            H = meas.sensor.get_hx(track.x)
-
-        gamma = meas.z - H * track.x
+            hx = meas.sensor.get_hx(track.x)
+            gamma = meas.z - hx
         
-
         return gamma
         
         ############
