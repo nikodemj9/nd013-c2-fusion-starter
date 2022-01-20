@@ -16,6 +16,8 @@ Tracked object:
 Second step was focused on track management: initializing, deleting, setting track state and track score.
 All instructions were implemented and results can be seen by following the life-cycle of the track.
 
+![results](images/FinalProject/Step2_RMSE.png "results")
+
 ![results](images/FinalProject/Step2_track_initialized.png "results")
 ![results](images/FinalProject/Step2_track_tentative.png "results")
 ![results](images/FinalProject/Step2_track_confirmed.png "results")
@@ -25,6 +27,7 @@ All instructions were implemented and results can be seen by following the life-
 
 Third step involved implementation of SNN (Single Nearest Neighbor) to associate measurements with tracks. This allows us to perform multi-target tracking. Mahalanobis distance and gating are used to make sure that we are only checking reasonable associations.
 
+![results](images/FinalProject/Step3_RMSE.png "results")
 ![results](images/FinalProject/Step3_tracks.png "results")
 
 ### Step 4 - Sensor Fusion
