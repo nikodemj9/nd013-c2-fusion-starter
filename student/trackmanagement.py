@@ -152,12 +152,11 @@ class Trackmanagement:
         ############
         track.score = track.score + 1/params.window
 
-        if(track.score > 1/params.window):
-            track.state = 'tentative'
-
         if(track.score > params.confirmed_threshold):
             track.state = 'confirmed'
-        
+        else:
+            track.state = 'tentative'
+
         if(track.score > 1.0):
             track.score = 1.0
         ############
